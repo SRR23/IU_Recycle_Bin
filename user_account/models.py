@@ -19,11 +19,7 @@ class User(AbstractUser):
     )
     phone_number = models.TextField(
         default="",
-        max_length=11,
-        unique=True,
-        error_messages={
-            "unique": "The phone_number must be unique"
-        }
+        max_length=11
     )
 
     REQUIRED_FIELDS = ["email"]
