@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %} My Posts {% endblock title %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+    <main class="tm-main">
+
+        {% if messages %}
+        <div>
+            {% include 'message.html' %}
+        </div>
+        {% endif %}
+        
+        <div class="row tm-row">
+            {% comment %} this 'blogs' comes from my_post views {% endcomment %}
+             
+            {% for post in blogs %}
+            <article class="col-12 col-md-6 tm-post">
+                <hr class="tm-hr-primary">
+                <a href="{% url 'post_details' post.slug %}" class="effect-lily tm-post-link tm-pt-60">
+                    <div class="tm-post-link-inner">
+                        <img src="{{post.banner.url}}" alt="Image" class="img-fluid tm-post-image">
+
+                        <a class="px-2 ml-auto" href="{% url 'update_post' post.slug %}" title="Edit Post">
+                            <i class="fa fa-edit text-warning"></i>
+                        </a>
+
+                        <a class="px-2" href="?delete={{post.pk}}" title="Delete Post">
+                            <i class="fa fa-trash text-danger"></i>
+                        </a>                            
+                    </div>
+                    <span class="position-absolute tm-new-badge">{{post.availability}}</span>
+                    <h2 class="tm-pt-30 tm-color-primary tm-post-title">{{post.title}}</h2>
+                </a>                    
+                
+                <div class="d-flex justify-content-between tm-pt-45">
+                    {% for tag in post.tags.all %}
+                    <span class="tm-color-primary">{{tag.title}}</span>
+                    {% endfor %}
+                    <span class="tm-color-primary">{{post.created_date}}</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <span>{{post.blog_comment.all.count}} comments</span>
+                    <span>{{post.user.username}}</span>
+                </div>
+            </article>
+            {% endfor %}
+
+        </div>
+
+        <div class="row tm-row tm-mt-100 tm-mb-75">
+
+            <div class="tm-prev-next-wrapper">
+                {% if blogs.has_previous %}
+                <a href="?page={{blogs.previous_page_number}}" class="mb-2 tm-btn tm-btn-primary tm-prev-next tm-mr-20">Prev</a>
+                {% endif %}
+        
+                {% if blogs.has_next %}
+                <a href="?page={{blogs.next_page_number}}" class="mb-2 tm-btn tm-btn-primary tm-prev-next">Next</a>
+                {% endif %}
+            </div>
+        
+        
+            <div class="tm-paging-wrapper">
+                <span class="d-inline-block mr-3">Page</span>
+                <nav class="tm-paging-nav d-inline-block">
+                    <ul>
+                        
+                        {% for page in blogs.paginator.page_range %}
+                        {% if page == blogs.number %}
+                        <li class="tm-paging-item active">
+                            <a href="?page={{page}}" class="mb-2 tm-btn tm-paging-link">{{page}}</a>
+                        </li>
+                        {% else %}
+                        <li>
+                            <a href="?page={{page}}" class="mb-2 tm-btn tm-paging-link">{{page}}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                      
+                    </ul>
+                </nav>
+            </div>                   
+        </div>
+    </main>
+</div>
+
+
+{% endblock content %}

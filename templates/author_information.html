@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %} Author Information {% endblock title %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+    <main class="tm-main">
+        <div class="col-12">
+                
+            <h2 class="tm-color-primary tm-post-title tm-mb-60">Seller Information:</h2>
+        </div>
+        <div class="col-lg-7 tm-contact-left">
+            <form action="GET" class="mb-5 ml-auto mr-0 tm-contact-form">
+                {% csrf_token %}                        
+                <div class="form-group row mb-4">
+                    <label for="name" class="col-sm-3 col-form-label text-right tm-color-primary">username: </label>
+                    <div class="col-sm-9">
+                        {% comment %} This 'account' comes from user_informations views {% endcomment %}
+                        
+                        <span>{{account.username}}</span> 
+                                                  
+                    </div>
+                </div>
+                <div class="form-group row mb-4">
+                    <label for="email" class="col-sm-3 col-form-label text-right tm-color-primary">email: </label>
+                    <div class="col-sm-9">
+                       
+                        <span>{{account.email}}</span> 
+                    </div>
+                </div>
+                <div class="form-group row mb-4">
+                    <label for="email" class="col-sm-3 col-form-label text-right tm-color-primary">first_name: </label>
+                    <div class="col-sm-9">
+                        
+                        <span>{{account.first_name}}</span> 
+                    </div>
+                </div>
+                <div class="form-group row mb-4">
+                    <label for="email" class="col-sm-3 col-form-label text-right tm-color-primary">last_name: </label>
+                    <div class="col-sm-9">
+                        
+                        <span>{{account.last_name}}</span> 
+                    </div>
+                </div>
+                <div class="form-group row mb-4">
+                    <label for="email" class="col-sm-3 col-form-label text-right tm-color-primary">phone number: </label>
+                    <div class="col-sm-9">
+                        <span>{{account.phone_number}}</span> 
+                    </div>
+                </div>                            
+                                              
+            </form>
+        </div>
+
+    </main>
+</div>    
+
+
+{% endblock content %}

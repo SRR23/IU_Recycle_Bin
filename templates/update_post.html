@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %} Update Post {% endblock title %}
+
+{% block content %}
+
+ 
+
+<div class="container-fluid">
+    <main class="tm-main">
+
+        <div class="row tm-row tm-mb-120">
+
+            <div class="col-12">
+                
+                <h2 class="tm-color-primary tm-post-title tm-mb-60">Update Post:</h2>
+            </div>
+              
+            <div class="col-lg-7 tm-contact-left">
+                <form method="POST" action="" enctype="multipart/form-data" class="mb-5 ml-auto mr-0 tm-contact-form">
+                    {{form.media}}
+                    {% csrf_token %}
+                                         
+                    <div class="form-group row mb-4">
+                        <label for="name" class="col-sm-3 col-form-label text-right tm-color-primary">Post Title</label>
+                        <div class="col-sm-9">
+                            <input class="form-control mr-0 ml-auto" name="title" value="{{form.instance.title}}" id="title_id" type="text"> 
+                            <p class="py-1 text-danger errors">{{form.instance.title.errors}}</p>                           
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label for="email" class="col-sm-3 col-form-label text-right tm-color-primary">Post Category</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" name="category" id="category_id">
+                                {% for category in categorys %}
+                                <option value="{{category.id}}" {% if form.instance.category.pk == category.pk %} selected {% endif %}>{{category.title}}</option>
+                                {% endfor %}
+                                <p class="text-danger py-1">{{form.instance.category.errors}}</p>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label for="email" class="col-sm-3 col-form-label text-right tm-color-primary">Description</label>
+                        <div class="col-sm-9">
+                            {{form.description|safe}}
+                            <p class="py-1 text-danger errors">{{form.description.errors}}</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label for="title" class="col-sm-3 col-form-label text-right tm-color-primary">Post Banner</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" name="banner" value="{{form.instance.banner.url}}" id="banner_id" type="file">
+                            <p class="py-1 text-danger errors">{{form.instance.banner.errors}}</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label for="email" class="col-sm-3 col-form-label text-right tm-color-primary">Tags</label>
+                        <div class="col-sm-9">
+                            <input class="form-control mr-0 ml-auto" 
+                            value="{% for tag in form.instance.tags.all %} {{ tag.title }}, {% endfor %}"
+                                    
+                            name="tags" id="tags_id" type="text">
+                            
+                            {% comment %} <textarea class="form-control mr-0 ml-auto" name="tags" id="tags_id">
+                                {% for tag in form.instance.tags.all %}
+                                {{ tag.title }},
+                                {% endfor %}
+                            </textarea> {% endcomment %}
+                            <p class="py-1 text-danger errors">{{form.instance.tags.errors}}</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label for="title" class="col-sm-3 col-form-label text-right tm-color-primary">Availability</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" name="availability" value="{{form.instance.availability}}" id="availability_id" type="text">
+                            <p class="py-1 text-danger errors">{{form.instance.availability.errors}}</p>
+                        </div>
+                    </div>
+                  
+                    <div class="form-group row text-right">
+                        <div class="col-12">
+                            <button class="tm-btn tm-btn-primary tm-btn-small">Update</button>                        
+                        </div>                            
+                    </div>                                
+                                                  
+                </form>
+                
+            </div>
+            
+        </div>
+
+    </main>
+</div>
+
+
+{% endblock content %}

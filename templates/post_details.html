@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %} Post Details {% endblock title %}
+
+{% block content %}
+
+{% comment %} This 'blog' comes from post_details views {% endcomment %}
+
+<div class="container-fluid">
+    <main class="tm-main">
+        {% if messages %}
+        <div>
+            {% include 'message.html' %}
+        </div>
+        {% endif %}
+        
+        <div class="row tm-row">
+            
+            <article class="col-12 col-md-6 tm-post">
+                <hr class="tm-hr-primary">
+                <a href="{% url 'post_details' blog.slug %}" class="effect-lily tm-post-link tm-pt-60">
+                    <div class="tm-post-link-inner">
+                        <img src="{{blog.banner.url}}" alt="Image" class="img-fluid">                            
+                    </div>
+                    <span class="position-absolute tm-new-badge">{{blog.availability}}</span>
+                    <h2 class="tm-pt-30 tm-color-primary tm-post-title">{{blog.title}}</h2>                          
+                    
+            
+                </a>
+                
+                <div>{{ blog.description|safe }}</div>  
+                
+                
+                
+                <div class="d-flex justify-content-between tm-pt-45">
+                    {% for tag in blog.tags.all %}
+                    <span class="tm-color-primary">{{tag.title}}</span>
+                    {% endfor %}
+                    <span class="tm-color-primary">{{blog.created_date}}</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <span>{{blog.blog_comment.all.count}} comments</span>
+                    <a href="{% url 'view_user_information' blog.user.username %}">{{blog.user.username}}</a>
+                </div>
+            </article>
+            {% comment %} <div class="tm-post-link-inner">
+                <img src="{{blog.banner.url}}" alt="Image" class="img-fluid">                            
+            </div> {% endcomment %}
+            {% comment %} <div class="col-12">
+                <hr class="tm-hr-primary tm-mb-55">
+                
+                <img src="{{blog.banner.url}}" width="954" height="535" controls class="tm-mb-40">
+        
+            </div> {% endcomment %}
+        </div>
+
+        <div class="row tm-row">
+            <div class="col-lg-8 tm-post-col">
+                <div class="tm-post-full">                    
+                    {% comment %} <div class="mb-4">
+                        <h2 class="pt-2 tm-color-primary tm-post-title">{{blog.title}}</h2>
+                        <p class="tm-mb-40">{{blog.created_date}} posted by {{blog.user.username}}</p>
+                        <p>{{blog.description|safe}}</p>
+                        {% for tag in blog.tags.all %}    
+                        <span class="d-block text-right tm-color-primary">{{tag.title}}</span>
+                        {% endfor %}
+                    </div> {% endcomment %}
+                    
+                    <!-- Comments -->
+                    <div>
+                        <h2 class="tm-color-primary tm-post-title">Comments</h2>
+                        <hr class="tm-hr-primary tm-mb-45">
+
+                        {% for comnt in blog.blog_comment.all %}
+                        <div class="tm-comment tm-mb-45">
+                           
+                            <figure class="tm-comment-figure">
+                                {% comment %} <img src="{{comnt.user.get_profile_picture}}" alt="Image" class="mb-2 rounded-circle img-thumbnail"> {% endcomment %}
+                                <figcaption class="tm-color-primary text-center">{{comnt.user.username}}</figcaption>
+                                <p style="font-size:15px;" class="text-center">{{comnt.created_date}}</p>
+                            </figure>
+                            
+                            <div>
+                                {% comment %} this 'comment' comes form post_dertails views {% endcomment %}
+                                <p style="color:black;" >{{comnt.comment}}</p>
+                                <form action="{% url 'add_reply' blog.id comnt.id %}" class="mb-5 tm-comment-form" method="POST">
+                                    {% csrf_token %}
+                                    {% comment %} <h2 class="tm-color-primary tm-post-title mb-4">Your reply</h2> {% endcomment %}
+                                    
+                                    <div class="mb-4">
+                                        <textarea class="form-control" name="message" placeholder="Type your reply" rows="6" required=""></textarea>
+                                    </div>
+        
+                                    {% if request.user.is_authenticated %}
+                                    <div class="text-right">
+                                        <button class="tm-btn tm-btn-primary tm-btn-small">Reply</button>                       
+                                    </div> 
+                                    {% else %}
+                                    <a href="" class="tm-btn">Please, Login to Reply</a>
+                                    {% endif %}                                
+                                </form>        
+                            </div>
+
+                            
+                            <div style="margin-top:280px;">
+                                {% for rply in comnt.comment_replies.all %}
+                                <hr>
+                                <div class="tm-comment">
+                                    <figure style="margin-right:40px" class="tm-comment-figure">
+                                        {% comment %} <img src="{{rply.user.get_profile_picture}}" alt="Image" class="mb-2 rounded-circle img-thumbnail"> {% endcomment %}
+                                        <figcaption class="tm-color-primary text-center">{{rply.user.username}}</figcaption>    
+                                        <p style="font-size:15px;" class="text-center">{{rply.created_date}}</p>    
+                                    </figure>
+                                    
+                                    <p style="margin-top:30px; color:black;">
+                                        {{rply.text}}
+                                    </p>
+                                </div>                                
+                               {% endfor %}
+                            </div>
+                           
+                            
+                        </div>
+                        {% endfor %}
+
+                    
+                       
+                        
+                
+                        
+                        <form action="{% url 'post_details' blog.slug %}" class="mb-5 tm-comment-form" method="POST">
+                            {% csrf_token %}
+                            <h2 class="tm-color-primary tm-post-title mb-4">Your comment</h2>
+                            
+                            <div class="mb-4">
+                                <textarea class="form-control" name="message" placeholder="Type your comment" rows="6" required=""></textarea>
+                            </div>
+
+                            {% if request.user.is_authenticated %}
+                            <div class="text-right">
+                                <button class="tm-btn tm-btn-primary tm-btn-small">Comment</button>                       
+                            </div> 
+                            {% else %}
+                            <a href="" class="tm-btn">Please, Login to comment</a>
+                            {% endif %}                                
+                        </form>                          
+                    </div>
+
+                </div>
+            </div>
+
+            <aside class="col-lg-4 tm-aside-col">
+                <div class="tm-post-sidebar">
+                    <hr class="mb-3 tm-hr-primary">
+                    <h2 class="mb-4 tm-post-title tm-color-primary">Categories</h2>
+                    <ul class="tm-mb-75 pl-5 tm-category-list">
+                        {% for ctg in categorys %}
+                        <li><a href="{% url 'category_post' ctg.slug %}" class="tm-color-primary">{{ctg.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                    
+                    <hr class="mb-3 tm-hr-primary">
+                    <h2 class="tm-mb-40 tm-post-title tm-color-primary">Related Posts</h2>
+                    {% for re in related_blogs %}
+                    <a href="{% url 'post_details' re.slug %}" class="d-block tm-mb-40">
+                        <figure>
+                            <img src="{{re.banner.url}}" alt="Image" class="mb-3 img-fluid">
+                            <figcaption class="tm-color-primary">{{re.title}}</figcaption>
+                        </figure>
+                    </a>
+                    {% endfor %}
+                 
+                </div>                    
+            </aside>
+        </div>
+
+    </main>
+</div>
+
+
+
+
+{% endblock content %}

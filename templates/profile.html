@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %} Profile {% endblock title %}
+
+{% block content %}
+
+ 
+
+<div class="container-fluid">
+    <main class="tm-main">
+        
+
+        {% if messages %}
+        <div>
+            {% include 'message.html' %}
+        </div>
+        {% endif %} 
+
+        <div class="row tm-row tm-mb-120">
+            <div style="margin-bottom:50px;" class="row text-left">
+                <div class="col-6">
+                    <a href="{% url 'add_blog' %}" class="tm-btn tm-btn-primary tm-btn-small">Add_Post</a>
+                </div>                        
+            </div>
+
+            <div style="margin-right:500px;">
+                <div class="col-6">
+                    <a href="{% url 'my_post' %}" class="tm-btn tm-btn-primary tm-btn-small">My_Posts</a>
+                </div>                        
+            </div>  
+
+            <div class="col-12">
+                
+                <h2 class="tm-color-primary tm-post-title tm-mb-60">Profile Information</h2>
+            </div>
+            <div class="col-lg-7 tm-contact-left">
+                
+                
+                <form method="POST" action="{% url 'profile' %}" class="mb-5 ml-auto mr-0 tm-contact-form" novalidate>
+                    {% csrf_token %}                        
+                    <div class="form-group row mb-4">
+                        <label for="name" class="col-sm-3 col-form-label text-right tm-color-primary">username</label>
+                        <div class="col-sm-9">
+                            {% comment %} This 'account' comes from profile views {% endcomment %}
+                            <input class="form-control mr-0 ml-auto" value="{{account.username}}" name="username" id="username_id" type="text"> 
+                            <p class="py-1 text-danger errors">{{form.username.errors}}</p>                           
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label for="email" class="col-sm-3 col-form-label text-right tm-color-primary">email</label>
+                        <div class="col-sm-9">
+                            <input class="form-control mr-0 ml-auto" value="{{account.email}}" name="email" id="email_id" type="email">
+                            <p class="py-1 text-danger errors">{{form.email.errors}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label for="email" class="col-sm-3 col-form-label text-right tm-color-primary">first_name</label>
+                        <div class="col-sm-9">
+                            <input class="form-control mr-0 ml-auto" value="{{account.first_name}}" name="first_name" id="first_name_id" type="text">
+                            <p class="py-1 text-danger errors">{{form.first_name.errors}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label for="email" class="col-sm-3 col-form-label text-right tm-color-primary">last_name</label>
+                        <div class="col-sm-9">
+                            <input class="form-control mr-0 ml-auto" value="{{account.last_name}}" name="last_name" id="last_name_id" type="text">
+                            <p class="py-1 text-danger errors">{{form.last_name.errors}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label for="email" class="col-sm-3 col-form-label text-right tm-color-primary">phone number</label>
+                        <div class="col-sm-9">
+                            <input class="form-control mr-0 ml-auto" value="{{account.phone_number}}" name="phone_number" id="phone_number_id" type="text">
+                            <p class="py-1 text-danger errors">{{form.phone_number.errors}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label for="email" class="col-sm-3 col-form-label text-right tm-color-primary">password</label>
+                        <div class="col-sm-9">
+                            <input class="form-control mr-0 ml-auto" name="password" id="password_id" type="password">
+                            
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label for="email" class="col-sm-3 col-form-label text-right tm-color-primary">confirm password</label>
+                        <div class="col-sm-9">
+                            <input class="form-control mr-0 ml-auto" name="confirm_password" id="confirm_password_id" type="password">
+                            
+                        </div>
+                    </div>
+                  
+                    <div class="form-group row text-right">
+                        <div class="col-12">
+                            <button class="tm-btn tm-btn-primary tm-btn-small">Update</button>                        
+                        </div>                            
+                    </div>                                
+                                                  
+                </form>
+                
+            </div>
+            
+        </div>
+
+    </main>
+</div>
+
+
+{% endblock content %}

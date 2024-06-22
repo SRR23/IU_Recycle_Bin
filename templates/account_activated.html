@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %} Home {% endblock title %}
+
+{% block content %}
+<div class="container-fluid">
+    <main class="tm-main">
+        {% if user.is_authenticated %}
+        <h4>Welcome, {{ user.username }}! You have Successfully Activated the Account and Logged in!</h4>
+        {% endif %}
+    </main>
+</div>
+
+
+
+
+{% endblock content %}
